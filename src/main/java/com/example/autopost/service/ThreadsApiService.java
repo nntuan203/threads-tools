@@ -29,7 +29,7 @@ public class ThreadsApiService {
     }
 
     public String createMediaContainer(String mediaType, String text, String mediaUrl) {
-        logger.info("Creating media container for mediaType: {}, text: {}", mediaType, text);
+        logger.info("Creating media container for mediaType: {}", mediaType);
 
         BodyInserters.FormInserter<String> form = BodyInserters.fromFormData("media_type", mediaType)
                 .with("text", text)

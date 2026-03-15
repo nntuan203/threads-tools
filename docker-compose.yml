@@ -16,6 +16,9 @@ services:
 
     environment:
       THREADS_ACCESS_TOKEN: ${THREADS_ACCESS_TOKEN}
+#      Time zone
+      TZ: Asia/Ho_Chi_Minh
+      JAVA_TOOL_OPTIONS: "-Duser.timezone=Asia/Ho_Chi_Minh"
 
     tty: true
     stdin_open: true
