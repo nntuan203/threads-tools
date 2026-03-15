@@ -1,4 +1,4 @@
-# auto-post (Spring MVC + Docker)
+# Threads Scheduled Auto Posting App (Spring MVC + Docker)
 
 A minimal **Spring Boot (Spring MVC)** application that automatically posts to Threads and runs inside **Docker**.
 
