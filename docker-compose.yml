@@ -2,12 +2,31 @@ version: "3.9"
 
 services:
   app:
-    image: maven:3.9.5-eclipse-temurin-17
+    image: maven:3.9.9-eclipse-temurin-17
+    container_name: spring-dev
     working_dir: /workspace
+
     volumes:
       - .:/workspace
-      - ~/.m2:/root/.m2
-      - ./data:/data
+      - maven-cache:/root/.m2
+      - ./data:/workspace/data
+
     ports:
       - "8080:8080"
-    command: mvn -q -Dspring-boot.run.fork=false spring-boot:run
+
+    environment:
+      THREADS_ACCESS_TOKEN: ${THREADS_ACCESS_TOKEN}
+
+    tty: true
+    stdin_open: true
+
+    command: >
+      sh -c "
+      echo '⚡ Starting Spring Boot Dev Mode...';
+      echo '🔑 THREADS_ACCESS_TOKEN=' \$THREADS_ACCESS_TOKEN;
+      echo '🚀 Application will start at http://localhost:8080';
+      mvn -T 1C -Dspring-boot.run.fork=false spring-boot:run
+      "
+
+volumes:
+  maven-cache:
