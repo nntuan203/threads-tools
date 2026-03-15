@@ -1,2 +1,16 @@
+# Maven build
+target/
+
 # Data folder (ignore everything inside)
 data/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
