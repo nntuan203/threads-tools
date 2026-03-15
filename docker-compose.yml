@@ -22,10 +22,8 @@ services:
 
     command: >
       sh -c "
-      echo '⚡ Starting Spring Boot Dev Mode...';
-      echo '🔑 THREADS_ACCESS_TOKEN=' \$THREADS_ACCESS_TOKEN;
       echo '🚀 Application will start at http://localhost:8080';
-      mvn -T 1C -Dspring-boot.run.fork=false spring-boot:run
+      mvn -q -T 1C -Dspring-boot.run.fork=false spring-boot:run
       "
 
 volumes:
