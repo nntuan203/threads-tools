@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Post Detail</title>
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:#f4f6f9;
+            margin:0;
+            padding:40px;
+        }
+
+        /* card */
+        .container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .card{
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        /* header info */
+
+        .meta{
+            display:flex;
+            gap:40px;
+            margin-bottom:25px;
+            font-size:14px;
+            color:#555;
+        }
+
+        .meta strong{
+            color:#222;
+        }
+
+        /* form */
+
+        .form-group{
+            margin-bottom:18px;
+        }
+
+        label{
+            font-weight:600;
+            margin-bottom:6px;
+            display:block;
+        }
+
+        input,
+        select,
+        textarea{
+            width:100%;
+            padding:10px 12px;
+            border-radius:6px;
+            border:1px solid #dcdcdc;
+            font-size:14px;
+            transition:0.2s;
+        }
+
+        textarea{
+            resize:vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus{
+            outline:none;
+            border-color:#4a90e2;
+            box-shadow:0 0 0 2px rgba(74,144,226,0.15);
+        }
+
+        /* buttons */
+
+        .actions{
+            margin-top:25px;
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+
+        .btn{
+            border:none;
+            padding:10px 16px;
+            border-radius:6px;
+            font-size:14px;
+            cursor:pointer;
+            text-decoration:none;
+            display:inline-block;
+        }
+
+        .update{
+            background:#28a745;
+            color:white;
+        }
+
+        .publish{
+            background:#007bff;
+            color:white;
+        }
+
+        .back{
+            background:#6c757d;
+            color:white;
+        }
+
+        .btn:hover{
+            opacity:0.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="meta">
+            <div>
+                <strong>Created At:</strong>
+                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            </div>
+
+            <div>
+                <strong>Updated At:</strong>
+                <span th:text="${post.updatedAt != null ? #temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span>
+            </div>
+        </div>
+
+        <form th:action="@{/posts/{id}/update(id=${post.id})}" method="post">
+
+            <div class="form-group">
+                <label for="text">Text</label>
+                <textarea id="text" name="text" rows="4" required
+                          th:text="${post.text}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mediaUrl">Media URL</label>
+                <input type="url" id="mediaUrl" name="mediaUrl" th:value="${post.mediaUrl}" />
+            </div>
+
+            <div class="form-group">
+                <label for="mediaType">Media Type</label>
+                <select id="mediaType" name="mediaType">
+                    <option value="TEXT" th:selected="${post.mediaType == 'TEXT'}">TEXT</option>
+                    <option value="IMAGE" th:selected="${post.mediaType == 'IMAGE'}">IMAGE</option>
+                    <option value="VIDEO" th:selected="${post.mediaType == 'VIDEO'}">VIDEO</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="DRAFT" th:selected="${post.status.name() == 'DRAFT'}">DRAFT</option>
+                    <option value="SCHEDULED" th:selected="${post.status.name() == 'SCHEDULED'}">SCHEDULED</option>
+                    <option value="PUBLISHED" th:selected="${post.status.name() == 'PUBLISHED'}">PUBLISHED</option>
+                    <option value="FAILED" th:selected="${post.status.name() == 'FAILED'}">FAILED</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="scheduledTime">Scheduled Time (required)</label>
+                <input type="datetime-local"
+                       name="scheduledTime"
+                       th:value="${post.scheduledTime != null ? #temporals.format(post.scheduledTime, 'yyyy-MM-dd''T''HH:mm') : ''}" />
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn update">Update Post</button>
+
+                <form th:if="${post.status.name() == 'DRAFT'}"
+                      th:action="@{'/publish/' + ${post.id}}"
+                      method="post"
+                      style="display:inline;">
+                    <button type="submit" class="btn publish">Publish Now</button>
+                </form>
+
+                <a href="/" class="btn back">Back to List</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
