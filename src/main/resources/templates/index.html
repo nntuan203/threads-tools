@@ -290,12 +290,10 @@
                             Detail
                         </a>
 
-                        <form th:action="@{'/delete/' + ${post.id}}" method="post">
-
+                        <form th:action="@{'/delete/' + ${post.id}(page=${currentPage})}" method="post">
                             <button type="submit" class="btn delete">
                                 Delete
                             </button>
-
                         </form>
 
                     </div>

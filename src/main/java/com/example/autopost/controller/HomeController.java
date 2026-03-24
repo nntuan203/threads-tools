@@ -46,9 +46,10 @@ public class HomeController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deletePost(@PathVariable String id) {
+    public String deletePost(@PathVariable String id,
+                             @RequestParam(defaultValue = "0") int page) {
         postService.deletePost(id);
-        return "redirect:/";
+        return "redirect:/?page=" + page;
     }
 
     @PostMapping("/create")

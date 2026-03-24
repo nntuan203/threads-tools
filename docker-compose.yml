@@ -2,23 +2,16 @@ version: "3.9"
 
 services:
   app:
-    image: maven:3.9.9-eclipse-temurin-17
-    container_name: spring-dev
-    working_dir: /workspace
-
-    volumes:
-      - .:/workspace
-      - maven-cache:/root/.m2
-      - ./data:/workspace/data
+    build: .
+    container_name: spring-app
 
     ports:
       - "8080:8080"
 
     environment:
-      THREADS_ACCESS_TOKEN: ${THREADS_ACCESS_TOKEN}
-#      Time zone
       TZ: Asia/Ho_Chi_Minh
       JAVA_TOOL_OPTIONS: "-Duser.timezone=Asia/Ho_Chi_Minh"
+      THREADS_ACCESS_TOKEN: ${THREADS_ACCESS_TOKEN}
 
     tty: true
     stdin_open: true
@@ -26,7 +19,9 @@ services:
     command: >
       sh -c "
       echo '🚀 Application will start at http://localhost:8080';
-      mvn -q -T 1C -Dspring-boot.run.fork=false spring-boot:run
+      mvn -q -T 1C -Dspring-boot.run.fork=false \
+      -Dspring-boot.run.jvmArguments='-Duser.timezone=Asia/Ho_Chi_Minh' \
+      spring-boot:run
       "
 
 volumes:
